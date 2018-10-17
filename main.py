@@ -14,7 +14,7 @@ from keras.layers import LSTM
 from sklearn import preprocessing
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
-from Functions import create_dataset, MakeNoise, parameters, Linear_decoder, linearization
+from Functions import create_dataset, MakeNoise, parameters
 #####################################################################
 ### run as python -W ignore main.py DataName.txt
 ### For example python -W ignore main.py 'deterministic_chaos.txt' 0 1
