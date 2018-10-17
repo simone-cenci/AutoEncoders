@@ -42,7 +42,6 @@ if Noise == 1:
 num_species = ts_training.shape[1]
 #### Give a different representation of the training set
 ts_training_original = ts_training
-#ts_training = StackDAE(ts_training, train_length, validation_length, 5, dim_red = 0)
 #### Reshape into X=t and Y=t+look_back
 look_back = 1
 ### Here you create an array Ytrain with the column to predict scale by look_back points (e.g.,, 1)
