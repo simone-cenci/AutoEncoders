@@ -29,19 +29,4 @@ def MakeNoise(X, percentage_std):
         ### Input: X = training set of the time series
         ###        percentage_std = percentage of standard deviation for the noise [0,1]
         X = X + np.random.normal(loc=0.0, scale=percentage_std*np.std(X[:,1]), size= X.shape)
-	return(X)
-
-def parameters(enc, dec):
-	### Input: enc,dec = encoder,decoder
-	### Output:
-	for layer in enc.layers:
-		weights_encoder = layer.get_weights()
-	for layer in dec.layers:
-		weights_decoder = layer.get_weights()
-	Wh = weights_encoder[0]
-	bh = weights_encoder[1]
-	Wg = weights_decoder[0]
-	bg = weights_decoder[1]
-
-	return(Wh, bh, Wg, bg)
-
+        return (X)

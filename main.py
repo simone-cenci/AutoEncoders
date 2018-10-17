@@ -14,16 +14,14 @@ from keras.layers import LSTM
 from sklearn import preprocessing
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
-from Functions import create_dataset, MakeNoise, parameters
+from Functions import create_dataset, MakeNoise
 #####################################################################
 ### run as python -W ignore main.py DataName.txt
 ### For example python -W ignore main.py 'deterministic_chaos.txt' 0 1
 # load the dataset
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 NomeFile = sys.argv[1]
-f = open(NomeFile, 'r')
-dataset = np.asmatrix([map(float,line.split(' ')) for line in f ])
-dataset = dataset.astype('float32')
+dataset = np.matrix(read_csv(NomeFile, sep=" ", header=None))
 ########################################################################################
 train_length = 100
 validation_length = 50
@@ -37,11 +35,13 @@ ts_training = preprocessing.scale(ts_training)
 Noise = int(sys.argv[2])
 if Noise == 1:
         ts_training = MakeNoise(ts_training, 0.2)
-        #print 'The time series has been contaminated with observational noise'
+        print('The time series has been contaminated with observational noise')
+        print('However, you check if you correctly predict the noise-free time series in the test set')
 ###
 num_species = ts_training.shape[1]
 #### Give a different representation of the training set
 ts_training_original = ts_training
+#ts_training = StackDAE(ts_training, train_length, validation_length, 5, dim_red = 0)
 #### Reshape into X=t and Y=t+look_back
 look_back = 1
 ### Here you create an array Ytrain with the column to predict scale by look_back points (e.g.,, 1)
@@ -113,7 +113,7 @@ training_data = decoder.predict(encoded_ts)
 training_data = np.insert(training_data, 0, np.array(np.repeat('nan',num_species)), 0) 
 os_rmse = np.sqrt(np.mean((next_point - test_set[1:(length_predictions),:])**2))
 os_correlation = np.mean([pearsonr(next_point[:,i], test_set[1:(length_predictions), i])[0] for i in range(num_species)])
-print os_rmse, os_correlation
+print( os_rmse, os_correlation)
 ### In case you use the autoencoder then plot the original training set (before encoding)
 all_data = np.concatenate((ts_training_original,test_set[0:(length_predictions - 1),:]), axis = 0)
 all_data_reconstructed = np.concatenate((training_data,next_point), axis = 0)
