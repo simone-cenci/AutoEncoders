@@ -45,21 +45,3 @@ def parameters(enc, dec):
 
 	return(Wh, bh, Wg, bg)
 
-def z(W,bh, x):
-    return(np.squeeze(np.asarray(np.dot(W,x)) + bh))
-### Encoder h(x) := sigmoid(Wx + b)
-def Sigmoid_encoder(W,bh,x):
-    return(np.repeat(1.,len(x))/(np.repeat(1.,len(x)) + np.squeeze(np.asarray(np.exp(-z(W, bh, x))))))
-### Decoder g[h(x)]
-def Linear_decoder(Wh, Wg, bh, bg, x):
-    return(np.squeeze(np.asarray(np.dot(Wg, Sigmoid_encoder(Wh, x, bh)) + bg)))
-
-
-#### Wotk in progress probably, surely, wrong
-def linearization(Wh, Wg, bh, bg, x):
-	WeightsProduct = np.dot(Wh,Wg)
-	numerator =  np.squeeze(np.asarray(np.exp(-z(Wh, bh, x))))
-	denominator = np.squeeze(np.asarray(np.repeat(1.,len(x)) + np.exp(-z(Wh, bh, x))))
-	denominator = np.dot(denominator, denominator)
-	return(np.squeeze(np.dot(WeightsProduct, numerator)/denominator))
-
